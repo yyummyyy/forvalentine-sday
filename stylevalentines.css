@@ -1,0 +1,13 @@
+body {
+    background-image: url('download33.jpg');
+    /* Путь к изображению */
+    background-size: cover;
+    /* Масштабирование на весь экран */
+    background-repeat: no-repeat;
+    /* Не повторять */
+    background-position: center;
+    /* Центрирование */
+    background-attachment: fixed;
+    /* Фиксированный фон */
+
+}

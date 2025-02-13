@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <link rel="stylesheet" href="темасайт/stylevalentines.css">
+    <title>Happy Valentine's Day!</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f5f5f5;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        .container {
+            position: absolute;
+            width: 750px;
+            /* Вернул прежний размер */
+            height: 850px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            /* Центрирование */
+        }
+
+
+        .background-image {
+            position: absolute;
+            width: 750px;
+            /* Подгоняем под контейнер */
+            height: 625px;
+            top: 59.17%;
+            left: 49.6%;
+            transform: translate(-50%, -50%);
+            /* Центрирование */
+            z-index: -1;
+            /* Поднять выше, но оставить под письмом */
+        }
+
+        .text {
+            font-size: 60px;
+            font-weight: bold;
+            color: #ffffff;
+            z-index: -3;
+            /* Бледно-розовый цвет */
+            text-shadow:
+                -2px -2px 0 #ff1087,
+                2px -2px 0 #b300ff,
+                -2px 2px 0 #ff1cb7,
+                2px 2px 0 #db9f9f,
+                4px 4px 5px rgba(0, 0, 0, 0.2);
+            white-space: nowrap;
+            position: relative;
+            top: 90px;
+            left: -100px;
+            transform: translateY(-50px);
+        }
+
+        .envelope,
+        .letter {
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            z-index: 2;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+
+        .envelope {
+            bottom: 3px;
+        }
+
+        .letter {
+            left: 22px;
+
+            z-index: 1;
+            cursor: grab;
+            transition: transform 0.1s linear;
+        }
+
+        .interaction-area {
+            position: absolute;
+            height: 100%;
+            top: 0;
+            width: 80px;
+            left: 70px;
+            /* Начальная зона на правом краю письма */
+            cursor: grab;
+            z-index: 4;
+            background: rgba(255, 255, 255, 0);
+            /* Прозрачный фон */
+        }
+    </style>
+</head>
+
+<body>
+    <img src="hearts.png" class="background-image"> <!-- Фон теперь прямо в <body>, не в .container -->
+    <div class="container">
+        <div class="interaction-area" id="interactionArea"></div>
+        <img src="letter.png" class="letter" id="letter">
+        <img src="envelope.png" class="envelope">
+        <div class="text">Любимому С днем Святого Валентина!</div>
+    </div>
+
+    <script>
+        var letter = document.getElementById("letter");
+        var interactionArea = document.getElementById("interactionArea");
+        var isDragging = false;
+        var startX;
+        var currentX = 0;
+        var maxTranslation = 650;
+        var minTranslation = 0;
+        var letterWidth = letter.clientWidth;
+
+        function updateInteractionArea() {
+            let visibleWidth = Math.min(letterWidth, currentX + 60);
+            interactionArea.style.width = `${visibleWidth}px`;
+            interactionArea.style.left = `${currentX + letterWidth - visibleWidth - 85}px`; // Сдвиг влево на 20px
+        }
+
+        interactionArea.addEventListener("mousedown", function (e) {
+            isDragging = true;
+            startX = e.clientX - currentX;
+            letter.style.cursor = "grabbing";
+            letter.style.transition = "none";
+        });
+
+        document.addEventListener("mousemove", function (e) {
+            if (!isDragging) return;
+            currentX = e.clientX - startX;
+            if (currentX < minTranslation) currentX = minTranslation;
+            if (currentX > maxTranslation) currentX = maxTranslation;
+
+            letter.style.transform = `translateX(${currentX}px)`;
+            updateInteractionArea();
+        });
+
+        document.addEventListener("mouseup", function () {
+            isDragging = false;
+            letter.style.cursor = "grab";
+            letter.style.transition = "transform 0.1s linear";
+        });
+
+        updateInteractionArea();
+    </script>
+</body>
+
+</html>
+
+</html>
